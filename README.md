@@ -1,19 +1,7 @@
 # EMS Pro — Employee Management System 🚀
-
 A modern, responsive, and feature-packed Employee & Task Management System built with **React 19**, **Vite**, and **Tailwind CSS v4**.
 
----
-
-## 📸 Screenshots
-
-<img width="1920" height="1080" alt="Screenshot 2026-06-12 121644" src="https://github.com/user-attachments/assets/44d8e8dc-53e3-40b8-8ebf-b8de36a0d98b" />
-<img width="1920" height="1080" alt="Screenshot 2026-06-12 121718" src="https://github.com/user-attachments/assets/d175b3ae-d21e-4839-9ae1-2407fe5664bd" />
-<img width="1920" height="1080" alt="Screenshot 2026-06-12 121738" src="https://github.com/user-attachments/assets/5c0cf9b3-0e86-449e-bdb2-dcb4b0a292a3" />
-
----
-
 ## ✨ Key Features
-
 ### 1. 🛡️ Administrator Portal (Admin: Akanksha)
 - **Real-Time Analytics Overview**:
   - Active Employees count across departments
@@ -47,7 +35,6 @@ A modern, responsive, and feature-packed Employee & Task Management System built
   - **Amrita (Lead Designer)**: `e2@m.com` / `123`
   - **Rahul (Backend Eng)**: `e3@m.com` / `123`
 - Full session persistence in `localStorage`.
-
 ---
 
 ## 🛠️ Tech Stack
@@ -58,18 +45,14 @@ A modern, responsive, and feature-packed Employee & Task Management System built
 - **Storage**: Browser `localStorage` with multi-user persistence
 
 ---
-
 ## 🚀 Getting Started
-
 1. **Install dependencies**:
    ```bash
    npm install
    ```
 
 2. **Start Development Server**:
-   ```bash
    npm run dev
-   ```
 
 3. **Build for Production**:
    ```bash
