@@ -2,135 +2,240 @@ import React, { useState, useEffect } from 'react'
 import Login from './components/Login'
 import EmployeeDashboard from './components/Dashboard/EmployeeDashboard'
 import AdminDashboard from './components/Dashboard/AdminDashboard'
+import { getLocalStorage } from './utils/localStorage'
 
 export default function App() {
-  const [user, setUser] = useState(null);
-  
-  // Employees ka data jo Admin manage karega
-  const [employees, setEmployees] = useState(() => {
-    const savedData = localStorage.getItem('ems_employees');
-    return savedData ? JSON.parse(savedData) : [
-      { id: 1, name: 'Mahesh sharma', role: 'Developer', salary: '50000' },
-      { id: 2, name: 'Amrita verma', role: 'Designer', salary: '45000' }
-    ];
-  });
+  const [user, setUser] = useState(null) // 'admin' | 'employee' | null
+  const [loggedInUserData, setLoggedInUserData] = useState(null)
+  const [employeesData, setEmployeesData] = useState([])
+  const [adminsData, setAdminsData] = useState([])
 
+  // Load registered admins and employees from localStorage
   useEffect(() => {
-    localStorage.setItem('ems_employees', JSON.stringify(employees));
-  }, [employees]);
+    const { employees, admins } = getLocalStorage()
+    setEmployeesData(employees)
+    setAdminsData(admins)
 
-  const handleLoginSuccess = (userData) => {
-    setUser(userData);
-  };
+    const savedUser = localStorage.getItem('loggedInUser')
+    if (savedUser) {
+      try {
+        const parsed = JSON.parse(savedUser)
+        if (parsed?.role === 'admin') {
+          setUser('admin')
+          setLoggedInUserData(parsed.data || { name: 'Akanksha' })
+        } else if (parsed?.role === 'employee') {
+          setUser('employee')
+          const currentEmp = employees.find((e) => e.id === parsed.data?.id) || parsed.data
+          setLoggedInUserData(currentEmp)
+        }
+      } catch (err) {
+        console.error('Session parse error:', err)
+      }
+    }
+  }, [])
+
+  // Multi-user Login Handler
+  const handleLogin = (email, password) => {
+    const cleanEmail = email.trim().toLowerCase()
+    const cleanPass = password.trim()
+
+    // 1. Check in Admins list (including Akanksha)
+    const matchedAdmin = adminsData.find(
+      (a) => a.email.toLowerCase() === cleanEmail && a.password === cleanPass
+    )
+    if (matchedAdmin) {
+      setUser('admin')
+      setLoggedInUserData(matchedAdmin)
+      localStorage.setItem('loggedInUser', JSON.stringify({ role: 'admin', data: matchedAdmin }))
+      return true
+    }
+
+    // 2. Check in Employees list
+    const matchedEmp = employeesData.find(
+      (e) => e.email.toLowerCase() === cleanEmail && e.password === cleanPass
+    )
+    if (matchedEmp) {
+      setUser('employee')
+      setLoggedInUserData(matchedEmp)
+      localStorage.setItem('loggedInUser', JSON.stringify({ role: 'employee', data: matchedEmp }))
+      return true
+    }
+
+    return false
+  }
+
+  // Multi-user Registration Handler
+  const handleRegister = (newUser) => {
+    const cleanEmail = newUser.email.trim().toLowerCase()
+
+    // Check if email already taken
+    const adminExists = adminsData.some((a) => a.email.toLowerCase() === cleanEmail)
+    const empExists = employeesData.some((e) => e.email.toLowerCase() === cleanEmail)
+
+    if (adminExists || empExists) {
+      return { success: false, message: 'This email is already registered. Please sign in.' }
+    }
+
+    if (newUser.role === 'admin') {
+      const newAdmin = {
+        id: Date.now(),
+        name: newUser.name,
+        email: cleanEmail,
+        password: newUser.password,
+        role: 'admin',
+      }
+      const updatedAdmins = [...adminsData, newAdmin]
+      setAdminsData(updatedAdmins)
+      localStorage.setItem('admins', JSON.stringify(updatedAdmins))
+      return { success: true }
+    } else {
+      const newEmp = {
+        id: Date.now(),
+        name: newUser.name,
+        email: cleanEmail,
+        password: newUser.password,
+        role: 'employee',
+        department: newUser.department || 'Engineering',
+        taskCounts: { active: 0, newTask: 0, completed: 0, failed: 0 },
+        tasks: [],
+      }
+      const updatedEmployees = [...employeesData, newEmp]
+      setEmployeesData(updatedEmployees)
+      localStorage.setItem('employees', JSON.stringify(updatedEmployees))
+      return { success: true }
+    }
+  }
+
+  // Logout Handler
   const handleLogout = () => {
-    setUser(null);
-  };
-
-  // Naya Employee Add karne ke liye 
-  const addEmployee = (e) => {
-    e.preventDefault();
-    const name = e.target.empName.value;
-    const role = e.target.empRole.value;
-    const salary = e.target.empSalary.value;
-
-    if (!name || !role || !salary) return alert("All fields are required!");
-
-    const newEmp = { id: Date.now(), name, role, salary };
-    setEmployees([...employees, newEmp]);
-    e.target.reset();
-  };
-
-  // Employee Delete karne ke liye (Admin Feature)
-  const deleteEmployee = (id) => {
-    setEmployees(employees.filter(emp => emp.id !== id));
-  };
-
-  // 1. Agar logged in nahi hai toh Login Screen dikhao
-  if (!user) {
-    return <Login onLoginSuccess={handleLoginSuccess} />;
+    setUser(null)
+    setLoggedInUserData(null)
+    localStorage.setItem('loggedInUser', '')
   }
 
-  // 2. Agar Admin Login hua hai
-  if (user.role === 'admin') {
-    return (
-      <div className="min-h-screen bg-gray-100 p-6">
-        <div className="max-w-5xl mx-auto">
-          {/* Header */}
-          <div className="flex justify-between items-center bg-white p-4 rounded-lg shadow mb-6">
-            <h1 className="text-xl font-bold text-indigo-700">Admin Dashboard ({user.email})</h1>
-            <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
-              Logout
-            </button>
-          </div>
+  // Admin creates a task and assigns to an employee
+  const createNewTask = (taskData) => {
+    const targetEmp = employeesData.find(
+      (e) => e.name.toLowerCase().trim() === taskData.assignTo.toLowerCase().trim()
+    )
 
-          {/* Form */}
-          <div className="bg-white p-6 rounded-lg shadow mb-6">
-            <h2 className="text-lg font-semibold mb-4 text-gray-700">Add New Employee</h2>
-            <form onSubmit={addEmployee} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <input name="empName" type="text" placeholder="Employee Name" className="p-2 border rounded focus:ring-2 focus:ring-indigo-500 outline-none" />
-              <input name="empRole" type="text" placeholder="Role" className="p-2 border rounded focus:ring-2 focus:ring-indigo-500 outline-none" />
-              <input name="empSalary" type="number" placeholder="Salary" className="p-2 border rounded focus:ring-2 focus:ring-indigo-500 outline-none" />
-              <button type="submit" className="md:col-span-3 bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700 transition font-medium">
-                Add Employee
-              </button>
-            </form>
-          </div>
+    if (!targetEmp) {
+      alert(`Employee "${taskData.assignTo}" not found in team directory!`)
+      return false
+    }
 
-          {/* Table */}
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-gray-50 border-b text-gray-600 text-sm uppercase">
-                  <th className="p-4">Name</th>
-                  <th className="p-4">Role</th>
-                  <th className="p-4">Salary</th>
-                  <th className="p-4 text-center">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {employees.map(emp => (
-                  <tr key={emp.id} className="border-b hover:bg-gray-550 transition">
-                    <td className="p-4 font-medium text-gray-800">{emp.name}</td>
-                    <td className="p-4 text-gray-600">{emp.role}</td>
-                    <td className="p-4 text-gray-600">₹{emp.salary}</td>
-                    <td className="p-4 text-center">
-                      <button onClick={() => deleteEmployee(emp.id)} className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    );
+    const newTask = {
+      id: `task-${Date.now()}`,
+      taskTitle: taskData.taskTitle,
+      taskDescription: taskData.taskDescription,
+      taskDate: taskData.taskDate,
+      category: taskData.category,
+      priority: taskData.priority || 'Medium',
+      active: false,
+      newTask: true,
+      completed: false,
+      failed: false,
+    }
+
+    const updatedEmployees = employeesData.map((emp) => {
+      if (emp.id === targetEmp.id) {
+        const tasks = [newTask, ...(emp.tasks || [])]
+        const taskCounts = {
+          ...emp.taskCounts,
+          newTask: (emp.taskCounts?.newTask || 0) + 1,
+        }
+        return {
+          ...emp,
+          tasks,
+          taskCounts,
+        }
+      }
+      return emp
+    })
+
+    setEmployeesData(updatedEmployees)
+    localStorage.setItem('employees', JSON.stringify(updatedEmployees))
+    alert(`Task "${taskData.taskTitle}" assigned to ${targetEmp.name} successfully!`)
+    return true
   }
 
-  // 3. Agar Normal Employee Login hua hai
+  // Employee updates status of a task
+  const updateTaskStatus = (taskId, newStatus) => {
+    if (!loggedInUserData) return
+
+    let updatedCurrentEmp = null
+
+    const updatedEmployees = employeesData.map((emp) => {
+      if (emp.id === loggedInUserData.id) {
+        let counts = { ...(emp.taskCounts || { active: 0, newTask: 0, completed: 0, failed: 0 }) }
+
+        const updatedTasks = (emp.tasks || []).map((t) => {
+          if (t.id === taskId) {
+            if (newStatus === 'active') {
+              if (t.newTask || t.status === 'newTask') counts.newTask = Math.max(0, counts.newTask - 1)
+              counts.active = (counts.active || 0) + 1
+              return { ...t, active: true, newTask: false, completed: false, failed: false }
+            }
+            if (newStatus === 'completed') {
+              if (t.active || t.status === 'active') counts.active = Math.max(0, counts.active - 1)
+              counts.completed = (counts.completed || 0) + 1
+              return { ...t, active: false, newTask: false, completed: true, failed: false }
+            }
+            if (newStatus === 'failed') {
+              if (t.active || t.status === 'active') counts.active = Math.max(0, counts.active - 1)
+              counts.failed = (counts.failed || 0) + 1
+              return { ...t, active: false, newTask: false, completed: false, failed: true }
+            }
+          }
+          return t
+        })
+
+        updatedCurrentEmp = {
+          ...emp,
+          tasks: updatedTasks,
+          taskCounts: counts,
+        }
+        return updatedCurrentEmp
+      }
+      return emp
+    })
+
+    if (updatedCurrentEmp) {
+      setLoggedInUserData(updatedCurrentEmp)
+      setEmployeesData(updatedEmployees)
+      localStorage.setItem('employees', JSON.stringify(updatedEmployees))
+      localStorage.setItem(
+        'loggedInUser',
+        JSON.stringify({ role: 'employee', data: updatedCurrentEmp })
+      )
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-2xl mx-auto">
-        <div className="flex justify-between items-center bg-white p-4 rounded-lg shadow mb-6">
-          <h1 className="text-xl font-bold text-green-700">Employee Dashboard</h1>
-          <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
-            Logout
-          </button>
-        </div>
+    <div className='min-h-screen bg-[#090d16] text-slate-100 font-sans antialiased'>
+      {!user && (
+        <Login 
+          handleLogin={handleLogin} 
+          handleRegister={handleRegister} 
+        />
+      )}
 
-        <div className="bg-white p-6 rounded-lg shadow text-center">
-          <div className="w-24 h-24 bg-green-100 text-green-700 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4">
-            E1
-          </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-1">Welcome Back!</h2>
-          <p className="text-gray-500 mb-4">{user.email}</p>
-          <div className="border-t pt-4 text-left space-y-2">
-            <p className="text-gray-600"><strong>Status:</strong> Active</p>
-            <p className="text-gray-600"><strong>Project Assigned:</strong> EMS Portal Optimization</p>
-          </div>
-        </div>
-      </div>
+      {user === 'admin' && (
+        <AdminDashboard 
+          adminName={loggedInUserData?.name || 'Akanksha'}
+          handleLogout={handleLogout} 
+          employees={employeesData} 
+          createNewTask={createNewTask} 
+        />
+      )}
+
+      {user === 'employee' && loggedInUserData && (
+        <EmployeeDashboard 
+          handleLogout={handleLogout} 
+          data={loggedInUserData} 
+          updateTaskStatus={updateTaskStatus} 
+        />
+      )}
     </div>
-  );
+  )
 }
