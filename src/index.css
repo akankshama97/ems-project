@@ -1,28 +1,63 @@
 @import "tailwindcss";
 
+:root {
+  /* EMS SaaS Design System Tokens */
+  --ems-bg: #F7F5F0;
+  --ems-surface: #FFFFFF;
+  --ems-border: #E5E2DA;
+  --ems-border-hover: #D1CDC4;
+  --ems-text-primary: #1C1B18;
+  --ems-text-secondary: #6B6860;
+  --ems-text-muted: #8E8A80;
+  --ems-accent: #0F766E;
+  --ems-accent-hover: #115E59;
+  --ems-accent-active: #0D625C;
+  --ems-panel-bg: #0F3D3A;
+  --ems-panel-text-muted: #A3C9C5;
+  --ems-danger: #B42318;
+  --ems-danger-bg: #FEF3F2;
+  --ems-danger-border: #FECDCA;
+  --ems-success: #027A48;
+  --ems-success-bg: #ECFDF3;
+  --ems-success-border: #A6F4C5;
+  --ems-badge-bg: #F2EFE9;
+  --ems-badge-text: #4E4C46;
+  --ems-shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --ems-radius: 8px;
+  --ems-radius-lg: 12px;
+}
+
+.font-heading {
+  font-family: 'DM Sans', 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.font-body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
 @layer base {
   body {
-    background-color: #090d16;
-    color: #f1f5f9;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--ems-bg, #F7F5F0);
+    color: var(--ems-text-primary, #1C1B18);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 }
 
-/* Modern sleek custom scrollbar */
+/* Sleek custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #D1CDC4;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #A8A29E;
 }

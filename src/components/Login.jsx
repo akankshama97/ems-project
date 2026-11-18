@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 export default function Login({ handleLogin, handleRegister }) {
   const [isRegistering, setIsRegistering] = useState(false)
@@ -6,7 +6,7 @@ export default function Login({ handleLogin, handleRegister }) {
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
   const [role, setRole] = useState('employee') // 'employee' | 'admin'
-  const [department, setDepartment] = useState('Engineering')
+  const [department, setDepartment] = useState('Frontend Engineering')
   const [error, setError] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
 
@@ -17,7 +17,7 @@ export default function Login({ handleLogin, handleRegister }) {
 
     if (isRegistering) {
       if (!name.trim() || !email.trim() || !password.trim()) {
-        setError('Please fill all required fields.')
+        setError('Please fill in all required fields.')
         return
       }
 
@@ -34,19 +34,19 @@ export default function Login({ handleLogin, handleRegister }) {
         return
       }
 
-      setSuccessMsg('Account created successfully! Logging you in...')
+      setSuccessMsg('Account created successfully. Logging you in...')
       setTimeout(() => {
         handleLogin(email.trim().toLowerCase(), password.trim())
       }, 500)
     } else {
       if (!email.trim() || !password.trim()) {
-        setError('Please enter your email and password.')
+        setError('Please enter your work email and password.')
         return
       }
 
       const success = handleLogin(email.trim().toLowerCase(), password.trim())
       if (!success) {
-        setError('Invalid email or password. Please verify or use the demo buttons below.')
+        setError('Invalid email or password. Please verify your details or use demo access below.')
       }
     }
   }
@@ -60,213 +60,332 @@ export default function Login({ handleLogin, handleRegister }) {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#090d16] px-4 py-8 relative overflow-hidden text-slate-100">
-      {/* Subtle modern ambient background glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-indigo-600/15 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[450px] h-[320px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="w-full max-w-md rounded-3xl bg-[#111827]/95 backdrop-blur-2xl p-8 sm:p-9 shadow-2xl border border-slate-800/90 relative z-10 transition-all duration-300">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-[var(--ems-bg,#F7F5F0)] text-[var(--ems-text-primary,#1C1B18)] font-body">
+      
+      {/* Left Panel: Desktop Solid Brand Panel (#0F3D3A) */}
+      <div className="hidden lg:flex lg:w-1/2 bg-[var(--ems-panel-bg,#0F3D3A)] text-white flex-col justify-between p-12 xl:p-16 select-none">
         
-        {/* Brand Header with Glowing Emblem & Hover Animation */}
-        <div className="text-center mb-6">
-          <div className="relative group mx-auto mb-4 inline-block">
-            {/* Ambient hover glow */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-sky-400 rounded-2xl blur-md opacity-60 group-hover:opacity-100 group-hover:scale-110 transition duration-500" />
-            
-            {/* Icon Card */}
-            <div className="relative flex items-center justify-center w-14 h-14 rounded-2xl bg-[#090d16] border border-slate-700/80 text-white font-black text-xl tracking-wider shadow-xl group-hover:border-indigo-500/80 transition-colors duration-300">
-              <span className="bg-gradient-to-tr from-indigo-400 via-sky-300 to-blue-400 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
-                EMS
-              </span>
+        {/* Brand / Logo */}
+        <div>
+          <div className="inline-flex items-center gap-3">
+            <div className="w-9 h-9 rounded-[8px] bg-white/10 border border-white/15 flex items-center justify-center font-semibold text-xs tracking-wider text-white">
+              EMS
             </div>
-          </div>
-
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-1.5">
-            <span className="bg-gradient-to-r from-white via-slate-100 to-indigo-200 bg-clip-text text-transparent">
-              {isRegistering ? 'Create Your Account' : 'Welcome to EMS'}
+            <span className="font-heading font-semibold text-lg tracking-tight text-white">
+              EMS Workspace
             </span>
-          </h2>
-          <p className="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">
-            {isRegistering 
-              ? 'Register as an Admin or Employee to access your workspace' 
-              : 'Enterprise Employee & Task Management Workspace'}
+          </div>
+        </div>
+
+        {/* Hero Copy & 3 Structured Feature Lines */}
+        <div className="max-w-md my-auto py-12">
+          <h1 className="font-heading text-3xl xl:text-4xl font-semibold leading-tight text-white mb-4">
+            Streamlined operations for modern teams.
+          </h1>
+          <p className="text-sm leading-relaxed text-[#A3C9C5] mb-10">
+            A single, focused workspace to coordinate task lifecycles, monitor progress, and manage departmental responsibilities.
           </p>
-        </div>
 
-        {/* Auth Mode Toggle Tabs with High-Quality Interactive Hover & Active States */}
-        <div className="flex bg-[#090d16] p-1.5 rounded-2xl mb-6 border border-slate-800 shadow-inner">
-          <button
-            type="button"
-            onClick={() => { setIsRegistering(false); setError(''); setSuccessMsg(''); }}
-            className={`relative flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer ${
-              !isRegistering 
-                ? 'bg-gradient-to-r from-indigo-600 via-indigo-500 to-blue-600 text-white shadow-lg shadow-indigo-600/30 scale-[1.02]' 
-                : 'text-slate-400 hover:text-white hover:bg-slate-850 hover:bg-slate-800/70 hover:scale-[1.01]'
-            }`}
-          >
-            <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-            </svg>
-            <span>Sign In</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => { setIsRegistering(true); setError(''); setSuccessMsg(''); }}
-            className={`relative flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer ${
-              isRegistering 
-                ? 'bg-gradient-to-r from-indigo-600 via-indigo-500 to-blue-600 text-white shadow-lg shadow-indigo-600/30 scale-[1.02]' 
-                : 'text-slate-400 hover:text-white hover:bg-slate-850 hover:bg-slate-800/70 hover:scale-[1.01]'
-            }`}
-          >
-            <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-            </svg>
-            <span>Register New User</span>
-          </button>
-        </div>
-
-        {/* Feedback Alerts */}
-        {error && (
-          <div className="mb-4 bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs p-3 rounded-xl text-center font-medium">
-            {error}
-          </div>
-        )}
-        {successMsg && (
-          <div className="mb-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs p-3 rounded-xl text-center font-medium">
-            {successMsg}
-          </div>
-        )}
-
-        {/* Form */}
-        <form onSubmit={submitHandler} className="space-y-4">
-          {isRegistering && (
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Akanksha Maurya"
-                className="w-full px-3.5 py-2.5 bg-[#090d16] border border-slate-700/80 hover:border-slate-600 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200"
-              />
-            </div>
-          )}
-
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">Work Email</label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={isRegistering ? "user@company.com" : "akanksha@admin.com or e1@m.com"}
-              className="w-full px-3.5 py-2.5 bg-[#090d16] border border-slate-700/80 hover:border-slate-600 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200"
-            />
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-1">
-              <label className="block text-xs font-semibold text-slate-300">Password</label>
-              {!isRegistering && <span className="text-[11px] text-slate-500">Default: 123</span>}
-            </div>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full px-3.5 py-2.5 bg-[#090d16] border border-slate-700/80 hover:border-slate-600 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200"
-            />
-          </div>
-
-          {isRegistering && (
-            <div className="grid grid-cols-2 gap-3 pt-1">
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Account Role</label>
-                <select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#090d16] border border-slate-700/80 hover:border-slate-600 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer transition-all duration-200"
-                >
-                  <option value="employee">Employee</option>
-                  <option value="admin">Administrator</option>
-                </select>
+          <div className="space-y-6">
+            {/* Feature 1 */}
+            <div className="flex items-start gap-3.5">
+              <div className="w-5 h-5 rounded-[4px] bg-[#115E59] border border-teal-600/30 flex items-center justify-center shrink-0 mt-0.5">
+                <svg className="w-3.5 h-3.5 text-teal-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
               </div>
+              <div>
+                <div className="text-sm font-semibold text-white">Assign tasks</div>
+                <div className="text-xs text-[#A3C9C5] mt-0.5">Direct assignment with clear priority levels and scope.</div>
+              </div>
+            </div>
 
-              {role === 'employee' && (
+            {/* Feature 2 */}
+            <div className="flex items-start gap-3.5">
+              <div className="w-5 h-5 rounded-[4px] bg-[#115E59] border border-teal-600/30 flex items-center justify-center shrink-0 mt-0.5">
+                <svg className="w-3.5 h-3.5 text-teal-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-white">Track progress</div>
+                <div className="text-xs text-[#A3C9C5] mt-0.5">Real-time status visibility across active and completed tasks.</div>
+              </div>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="flex items-start gap-3.5">
+              <div className="w-5 h-5 rounded-[4px] bg-[#115E59] border border-teal-600/30 flex items-center justify-center shrink-0 mt-0.5">
+                <svg className="w-3.5 h-3.5 text-teal-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-white">Manage team</div>
+                <div className="text-xs text-[#A3C9C5] mt-0.5">Structured employee directory and role-based permissions.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer info */}
+        <div className="text-xs text-[#A3C9C5]/80 flex items-center justify-between border-t border-teal-800/60 pt-6">
+          <span>Enterprise Management Suite</span>
+          <span>v2.4</span>
+        </div>
+      </div>
+
+      {/* Right Panel: Left-aligned Login Form (Stacked on Mobile) */}
+      <div className="w-full lg:w-1/2 flex items-center justify-start p-6 sm:p-10 lg:p-12 xl:p-16 overflow-y-auto">
+        <div className="w-full max-w-[440px] lg:mr-auto">
+          
+          {/* Mobile Brand Header */}
+          <div className="lg:hidden flex items-center gap-2.5 mb-8">
+            <div className="w-8 h-8 rounded-[8px] bg-[#0F3D3A] flex items-center justify-center font-semibold text-xs tracking-wider text-white">
+              EMS
+            </div>
+            <span className="font-heading font-semibold text-base tracking-tight text-[var(--ems-text-primary,#1C1B18)]">
+              EMS Workspace
+            </span>
+          </div>
+
+          {/* Form Surface Card: 1px border, no blur, no glow, max soft shadow */}
+          <div className="bg-[var(--ems-surface,#FFFFFF)] border border-[var(--ems-border,#E5E2DA)] rounded-[12px] p-6 sm:p-8 shadow-[var(--ems-shadow-soft,0_1px_2px_rgba(0,0,0,0.06))]">
+            
+            {/* Heading and Subtitle */}
+            <div className="mb-6">
+              <h2 className="font-heading text-2xl font-semibold text-[var(--ems-text-primary,#1C1B18)] tracking-normal">
+                {isRegistering ? 'Create your workspace account' : 'Sign in to your workspace'}
+              </h2>
+              <p className="text-sm text-[var(--ems-text-secondary,#6B6860)] mt-1.5 leading-normal">
+                {isRegistering 
+                  ? 'Enter your details to register as an administrator or employee.' 
+                  : 'Enter your credentials to access your account.'}
+              </p>
+            </div>
+
+            {/* Underlined Tabs (Sign In / Register) */}
+            <div className="flex border-b border-[var(--ems-border,#E5E2DA)] mb-6">
+              <button
+                type="button"
+                onClick={() => { setIsRegistering(false); setError(''); setSuccessMsg(''); }}
+                className={`pb-2.5 px-1 mr-6 text-sm font-medium transition-colors duration-150 cursor-pointer border-b-2 -mb-[1px] ${
+                  !isRegistering
+                    ? 'text-[var(--ems-accent,#0F766E)] border-[var(--ems-accent,#0F766E)]'
+                    : 'text-[var(--ems-text-secondary,#6B6860)] border-transparent hover:text-[var(--ems-text-primary,#1C1B18)]'
+                }`}
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                onClick={() => { setIsRegistering(true); setError(''); setSuccessMsg(''); }}
+                className={`pb-2.5 px-1 text-sm font-medium transition-colors duration-150 cursor-pointer border-b-2 -mb-[1px] ${
+                  isRegistering
+                    ? 'text-[var(--ems-accent,#0F766E)] border-[var(--ems-accent,#0F766E)]'
+                    : 'text-[var(--ems-text-secondary,#6B6860)] border-transparent hover:text-[var(--ems-text-primary,#1C1B18)]'
+                }`}
+              >
+                Register
+              </button>
+            </div>
+
+            {/* Error / Success Feedback Alerts */}
+            {error && (
+              <div className="mb-5 p-3 rounded-[8px] bg-[var(--ems-danger-bg,#FEF3F2)] border border-[var(--ems-danger-border,#FECDCA)] text-xs text-[var(--ems-danger,#B42318)] font-medium leading-relaxed">
+                {error}
+              </div>
+            )}
+            {successMsg && (
+              <div className="mb-5 p-3 rounded-[8px] bg-[var(--ems-success-bg,#ECFDF3)] border border-[var(--ems-success-border,#A6F4C5)] text-xs text-[var(--ems-success,#027A48)] font-medium leading-relaxed">
+                {successMsg}
+              </div>
+            )}
+
+            {/* Authentication Form */}
+            <form onSubmit={submitHandler} className="space-y-4">
+              {isRegistering && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Department</label>
-                  <select
-                    value={department}
-                    onChange={(e) => setDepartment(e.target.value)}
-                    className="w-full px-3 py-2.5 bg-[#090d16] border border-slate-700/80 hover:border-slate-600 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer transition-all duration-200"
-                  >
-                    <option value="Frontend Engineering">Frontend</option>
-                    <option value="Backend Architecture">Backend</option>
-                    <option value="Product Design">Design</option>
-                    <option value="Quality Assurance">QA</option>
-                    <option value="DevOps & Cloud">DevOps</option>
-                  </select>
+                  <label className="block text-xs font-medium text-[var(--ems-text-primary,#1C1B18)] mb-1.5">
+                    Full name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g. Akanksha Maurya"
+                    className="w-full h-[44px] px-3.5 bg-white border border-[var(--ems-border,#E5E2DA)] hover:border-[var(--ems-border-hover,#D1CDC4)] rounded-[8px] text-sm text-[var(--ems-text-primary,#1C1B18)] placeholder-[var(--ems-text-muted,#8E8A80)] focus:outline-none focus:border-[var(--ems-accent,#0F766E)] focus:ring-1 focus:ring-[var(--ems-accent,#0F766E)] transition-colors duration-150"
+                  />
                 </div>
               )}
-            </div>
-          )}
 
-          <button
-            type="submit"
-            className="w-full py-3 mt-2 bg-gradient-to-r from-indigo-600 via-indigo-500 to-blue-600 hover:from-indigo-500 hover:to-blue-500 active:scale-[0.99] text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 hover:shadow-indigo-500/40 hover:scale-[1.01] transition-all duration-200 cursor-pointer text-sm"
-          >
-            {isRegistering ? 'Complete Registration' : 'Sign In to Workspace'}
-          </button>
-        </form>
+              <div>
+                <label className="block text-xs font-medium text-[var(--ems-text-primary,#1C1B18)] mb-1.5">
+                  Work email
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@company.com"
+                  className="w-full h-[44px] px-3.5 bg-white border border-[var(--ems-border,#E5E2DA)] hover:border-[var(--ems-border-hover,#D1CDC4)] rounded-[8px] text-sm text-[var(--ems-text-primary,#1C1B18)] placeholder-[var(--ems-text-muted,#8E8A80)] focus:outline-none focus:border-[var(--ems-accent,#0F766E)] focus:ring-1 focus:ring-[var(--ems-accent,#0F766E)] transition-colors duration-150"
+                />
+              </div>
 
-        {/* Quick Demo Helper with Interactive Hover Cards */}
-        {!isRegistering && (
-          <div className="mt-6 pt-5 border-t border-slate-800 text-center">
-            <p className="text-[11px] font-semibold text-slate-400 mb-2.5">
-              Instant Demo Access (Click to autofill):
-            </p>
-            <div className="grid grid-cols-2 gap-2.5">
+              <div>
+                <label className="block text-xs font-medium text-[var(--ems-text-primary,#1C1B18)] mb-1.5">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full h-[44px] px-3.5 bg-white border border-[var(--ems-border,#E5E2DA)] hover:border-[var(--ems-border-hover,#D1CDC4)] rounded-[8px] text-sm text-[var(--ems-text-primary,#1C1B18)] placeholder-[var(--ems-text-muted,#8E8A80)] focus:outline-none focus:border-[var(--ems-accent,#0F766E)] focus:ring-1 focus:ring-[var(--ems-accent,#0F766E)] transition-colors duration-150"
+                />
+              </div>
+
+              {isRegistering && (
+                <div className="grid grid-cols-2 gap-3 pt-1">
+                  <div>
+                    <label className="block text-xs font-medium text-[var(--ems-text-primary,#1C1B18)] mb-1.5">
+                      Account role
+                    </label>
+                    <select
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
+                      className="w-full h-[44px] px-3 bg-white border border-[var(--ems-border,#E5E2DA)] hover:border-[var(--ems-border-hover,#D1CDC4)] rounded-[8px] text-sm text-[var(--ems-text-primary,#1C1B18)] focus:outline-none focus:border-[var(--ems-accent,#0F766E)] focus:ring-1 focus:ring-[var(--ems-accent,#0F766E)] transition-colors duration-150 cursor-pointer"
+                    >
+                      <option value="employee">Employee</option>
+                      <option value="admin">Administrator</option>
+                    </select>
+                  </div>
+
+                  {role === 'employee' && (
+                    <div>
+                      <label className="block text-xs font-medium text-[var(--ems-text-primary,#1C1B18)] mb-1.5">
+                        Department
+                      </label>
+                      <select
+                        value={department}
+                        onChange={(e) => setDepartment(e.target.value)}
+                        className="w-full h-[44px] px-3 bg-white border border-[var(--ems-border,#E5E2DA)] hover:border-[var(--ems-border-hover,#D1CDC4)] rounded-[8px] text-sm text-[var(--ems-text-primary,#1C1B18)] focus:outline-none focus:border-[var(--ems-accent,#0F766E)] focus:ring-1 focus:ring-[var(--ems-accent,#0F766E)] transition-colors duration-150 cursor-pointer"
+                      >
+                        <option value="Frontend Engineering">Frontend</option>
+                        <option value="Backend Architecture">Backend</option>
+                        <option value="Product Design">Design</option>
+                        <option value="Quality Assurance">QA</option>
+                        <option value="DevOps & Cloud">DevOps</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
+              )}
+
               <button
-                type="button"
-                onClick={() => fillDemo('akanksha@admin.com')}
-                className="text-left px-3.5 py-2.5 bg-slate-900/60 hover:bg-slate-800/90 border border-slate-800 hover:border-indigo-500/50 rounded-xl text-xs font-medium text-slate-200 transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:shadow-md hover:shadow-indigo-500/10 active:scale-[0.98] group"
+                type="submit"
+                className="w-full h-[44px] mt-2 bg-[var(--ems-accent,#0F766E)] hover:bg-[var(--ems-accent-hover,#115E59)] active:bg-[var(--ems-accent-active,#0D625C)] text-white text-sm font-medium rounded-[8px] transition-colors duration-150 cursor-pointer flex items-center justify-center"
               >
-                <div className="font-bold text-indigo-400 group-hover:text-indigo-300 transition-colors">Admin: Akanksha</div>
-                <div className="text-[10px] text-slate-400">akanksha@admin.com</div>
+                {isRegistering ? 'Create account' : 'Sign in'}
               </button>
+            </form>
 
-              <button
-                type="button"
-                onClick={() => fillDemo('e1@m.com')}
-                className="text-left px-3.5 py-2.5 bg-slate-900/60 hover:bg-slate-800/90 border border-slate-800 hover:border-cyan-500/50 rounded-xl text-xs font-medium text-slate-200 transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:shadow-md hover:shadow-cyan-500/10 active:scale-[0.98] group"
-              >
-                <div className="font-bold text-cyan-400 group-hover:text-cyan-300 transition-colors">Employee: Mahesh</div>
-                <div className="text-[10px] text-slate-400">e1@m.com</div>
-              </button>
+            {/* Demo Accounts Section */}
+            {!isRegistering && (
+              <div className="mt-8 pt-6 border-t border-[var(--ems-border,#E5E2DA)]">
+                <div className="text-xs font-medium text-[var(--ems-text-secondary,#6B6860)] mb-3">
+                  Demo accounts
+                </div>
 
-              <button
-                type="button"
-                onClick={() => fillDemo('e2@m.com')}
-                className="text-left px-3.5 py-2.5 bg-slate-900/60 hover:bg-slate-800/90 border border-slate-800 hover:border-amber-500/50 rounded-xl text-xs font-medium text-slate-200 transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:shadow-md hover:shadow-amber-500/10 active:scale-[0.98] group"
-              >
-                <div className="font-bold text-amber-400 group-hover:text-amber-300 transition-colors">Employee: Amrita</div>
-                <div className="text-[10px] text-slate-400">e2@m.com</div>
-              </button>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {/* Akanksha - Admin */}
+                  <button
+                    type="button"
+                    onClick={() => fillDemo('akanksha@admin.com')}
+                    className="flex items-center justify-between p-2.5 bg-white hover:bg-[#F9F8F5] border border-[var(--ems-border,#E5E2DA)] hover:border-[var(--ems-border-hover,#D1CDC4)] rounded-[8px] text-left transition-colors duration-150 cursor-pointer"
+                  >
+                    <div className="min-w-0 pr-2">
+                      <div className="text-xs font-medium text-[var(--ems-text-primary,#1C1B18)] truncate">
+                        Akanksha
+                      </div>
+                      <div className="text-[11px] text-[var(--ems-text-secondary,#6B6860)] truncate">
+                        akanksha@admin.com
+                      </div>
+                    </div>
+                    <span className="shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-[4px] bg-[var(--ems-badge-bg,#F2EFE9)] text-[var(--ems-badge-text,#4E4C46)] border border-[var(--ems-border,#E5E2DA)]">
+                      Admin
+                    </span>
+                  </button>
 
-              <button
-                type="button"
-                onClick={() => fillDemo('e3@m.com')}
-                className="text-left px-3.5 py-2.5 bg-slate-900/60 hover:bg-slate-800/90 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-xs font-medium text-slate-200 transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:shadow-md hover:shadow-emerald-500/10 active:scale-[0.98] group"
-              >
-                <div className="font-bold text-emerald-400 group-hover:text-emerald-300 transition-colors">Employee: Rahul</div>
-                <div className="text-[10px] text-slate-400">e3@m.com</div>
-              </button>
-            </div>
+                  {/* Mahesh - Employee */}
+                  <button
+                    type="button"
+                    onClick={() => fillDemo('e1@m.com')}
+                    className="flex items-center justify-between p-2.5 bg-white hover:bg-[#F9F8F5] border border-[var(--ems-border,#E5E2DA)] hover:border-[var(--ems-border-hover,#D1CDC4)] rounded-[8px] text-left transition-colors duration-150 cursor-pointer"
+                  >
+                    <div className="min-w-0 pr-2">
+                      <div className="text-xs font-medium text-[var(--ems-text-primary,#1C1B18)] truncate">
+                        Mahesh
+                      </div>
+                      <div className="text-[11px] text-[var(--ems-text-secondary,#6B6860)] truncate">
+                        e1@m.com
+                      </div>
+                    </div>
+                    <span className="shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-[4px] bg-[var(--ems-badge-bg,#F2EFE9)] text-[var(--ems-badge-text,#4E4C46)] border border-[var(--ems-border,#E5E2DA)]">
+                      Employee
+                    </span>
+                  </button>
+
+                  {/* Amrita - Employee */}
+                  <button
+                    type="button"
+                    onClick={() => fillDemo('e2@m.com')}
+                    className="flex items-center justify-between p-2.5 bg-white hover:bg-[#F9F8F5] border border-[var(--ems-border,#E5E2DA)] hover:border-[var(--ems-border-hover,#D1CDC4)] rounded-[8px] text-left transition-colors duration-150 cursor-pointer"
+                  >
+                    <div className="min-w-0 pr-2">
+                      <div className="text-xs font-medium text-[var(--ems-text-primary,#1C1B18)] truncate">
+                        Amrita
+                      </div>
+                      <div className="text-[11px] text-[var(--ems-text-secondary,#6B6860)] truncate">
+                        e2@m.com
+                      </div>
+                    </div>
+                    <span className="shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-[4px] bg-[var(--ems-badge-bg,#F2EFE9)] text-[var(--ems-badge-text,#4E4C46)] border border-[var(--ems-border,#E5E2DA)]">
+                      Employee
+                    </span>
+                  </button>
+
+                  {/* Rahul - Employee */}
+                  <button
+                    type="button"
+                    onClick={() => fillDemo('e3@m.com')}
+                    className="flex items-center justify-between p-2.5 bg-white hover:bg-[#F9F8F5] border border-[var(--ems-border,#E5E2DA)] hover:border-[var(--ems-border-hover,#D1CDC4)] rounded-[8px] text-left transition-colors duration-150 cursor-pointer"
+                  >
+                    <div className="min-w-0 pr-2">
+                      <div className="text-xs font-medium text-[var(--ems-text-primary,#1C1B18)] truncate">
+                        Rahul
+                      </div>
+                      <div className="text-[11px] text-[var(--ems-text-secondary,#6B6860)] truncate">
+                        e3@m.com
+                      </div>
+                    </div>
+                    <span className="shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-[4px] bg-[var(--ems-badge-bg,#F2EFE9)] text-[var(--ems-badge-text,#4E4C46)] border border-[var(--ems-border,#E5E2DA)]">
+                      Employee
+                    </span>
+                  </button>
+                </div>
+
+                {/* Muted Default Password Note */}
+                <p className="text-[11px] text-[var(--ems-text-secondary,#6B6860)] mt-3">
+                  Default password for demo accounts is <span className="font-medium text-[var(--ems-text-primary,#1C1B18)]">123</span>
+                </p>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   )
