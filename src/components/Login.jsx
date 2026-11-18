@@ -80,10 +80,14 @@ export default function Login({ handleLogin, handleRegister }) {
         {/* Hero Copy & 3 Structured Feature Lines */}
         <div className="max-w-md my-auto py-12">
           <h1 className="font-heading text-3xl xl:text-4xl font-semibold leading-tight text-white mb-4">
-            Streamlined operations for modern teams.
+            {isRegistering 
+              ? 'Join your team workspace and start collaborating.' 
+              : 'Streamlined operations for modern teams.'}
           </h1>
           <p className="text-sm leading-relaxed text-[#A3C9C5] mb-10">
-            A single, focused workspace to coordinate task lifecycles, monitor progress, and manage departmental responsibilities.
+            {isRegistering 
+              ? 'Register your profile to access tasks, share status updates, and coordinate with administrators.' 
+              : 'A single, focused workspace to coordinate task lifecycles, monitor progress, and manage departmental responsibilities.'}
           </p>
 
           <div className="space-y-6">
@@ -384,6 +388,33 @@ export default function Login({ handleLogin, handleRegister }) {
                 </p>
               </div>
             )}
+
+            {/* Bottom Mode Switch Link */}
+            <div className="mt-6 pt-5 border-t border-[var(--ems-border,#E5E2DA)] text-center text-xs text-[var(--ems-text-secondary,#6B6860)]">
+              {!isRegistering ? (
+                <span>
+                  Don't have an account?{' '}
+                  <button
+                    type="button"
+                    onClick={() => { setIsRegistering(true); setError(''); setSuccessMsg(''); }}
+                    className="font-medium text-[var(--ems-accent,#0F766E)] hover:text-[var(--ems-accent-hover,#115E59)] hover:underline cursor-pointer"
+                  >
+                    Register new user
+                  </button>
+                </span>
+              ) : (
+                <span>
+                  Already registered?{' '}
+                  <button
+                    type="button"
+                    onClick={() => { setIsRegistering(false); setError(''); setSuccessMsg(''); }}
+                    className="font-medium text-[var(--ems-accent,#0F766E)] hover:text-[var(--ems-accent-hover,#115E59)] hover:underline cursor-pointer"
+                  >
+                    Sign in to your account
+                  </button>
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>

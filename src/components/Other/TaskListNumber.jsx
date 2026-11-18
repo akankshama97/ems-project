@@ -13,56 +13,48 @@ const TaskListNumber = ({ data }) => {
       title: 'New Tasks',
       count: taskCounts.newTask ?? 0,
       subtext: 'Awaiting your acceptance',
-      color: 'text-cyan-400',
-      border: 'border-cyan-500/20 hover:border-cyan-500/40',
-      badge: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/20',
-      gradient: 'from-cyan-500/5 to-transparent',
+      badge: 'bg-[#F2EFE9] text-[#4E4C46] border-[#E5E2DA]',
+      valueColor: 'text-[#1C1B18]',
     },
     {
       title: 'In Progress',
       count: taskCounts.active ?? 0,
       subtext: 'Currently being executed',
-      color: 'text-amber-400',
-      border: 'border-amber-500/20 hover:border-amber-500/40',
-      badge: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
-      gradient: 'from-amber-500/5 to-transparent',
+      badge: 'bg-[#FEF6EE] text-[#B54708] border-[#F9DBAF]',
+      valueColor: 'text-[#B54708]',
     },
     {
       title: 'Completed',
       count: taskCounts.completed ?? 0,
       subtext: 'Successfully delivered',
-      color: 'text-emerald-400',
-      border: 'border-emerald-500/20 hover:border-emerald-500/40',
-      badge: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
-      gradient: 'from-emerald-500/5 to-transparent',
+      badge: 'bg-[#ECFDF3] text-[#027A48] border-[#A6F4C5]',
+      valueColor: 'text-[#027A48]',
     },
     {
       title: 'Failed / Blocked',
       count: taskCounts.failed ?? 0,
-      subtext: 'Stalled or issues reported',
-      color: 'text-rose-400',
-      border: 'border-rose-500/20 hover:border-rose-500/40',
-      badge: 'bg-rose-500/10 text-rose-300 border-rose-500/20',
-      gradient: 'from-rose-500/5 to-transparent',
+      subtext: 'Issues or blockers reported',
+      badge: 'bg-[#FEF3F2] text-[#B42318] border-[#FECDCA]',
+      valueColor: 'text-[#B42318]',
     },
   ]
 
   return (
-    <div className='grid grid-cols-2 lg:grid-cols-4 mt-8 gap-4'>
+    <div className="grid grid-cols-2 lg:grid-cols-4 mt-8 gap-4">
       {cards.map((card, idx) => (
         <div
           key={idx}
-          className={`p-5 rounded-2xl bg-[#111827] bg-gradient-to-br ${card.gradient} border ${card.border} shadow-lg transition-all duration-200`}
+          className="p-5 rounded-[12px] bg-white border border-[#E5E2DA] hover:border-[#D1CDC4] shadow-[0_1px_2px_rgba(0,0,0,0.06)] transition-colors duration-150"
         >
-          <div className='flex items-center justify-between mb-3'>
-            <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${card.badge}`}>
+          <div className="flex items-center justify-between mb-3">
+            <span className={`text-[11px] font-medium px-2 py-0.5 rounded-[4px] border ${card.badge}`}>
               {card.title}
             </span>
           </div>
-          <h2 className={`text-3xl lg:text-4xl font-extrabold tracking-tight ${card.color}`}>
+          <h2 className={`text-3xl lg:text-4xl font-semibold tracking-tight font-heading ${card.valueColor}`}>
             {card.count}
           </h2>
-          <p className='text-xs text-slate-400 mt-1 font-medium'>
+          <p className="text-xs text-[#6B6860] mt-1">
             {card.subtext}
           </p>
         </div>

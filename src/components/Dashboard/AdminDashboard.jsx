@@ -48,8 +48,8 @@ const AdminDashboard = ({
   const activeTasks = employees.reduce((sum, emp) => sum + (emp.taskCounts?.active || 0), 0)
 
   return (
-    <div className='min-h-screen w-full bg-[#090d16] text-slate-100 p-5 md:p-8 lg:p-10'>
-      <div className='max-w-7xl mx-auto'>
+    <div className="min-h-screen w-full bg-[var(--ems-bg,#F7F5F0)] text-[var(--ems-text-primary,#1C1B18)] p-4 sm:p-6 md:p-8 lg:p-10 font-body">
+      <div className="max-w-7xl mx-auto">
         {/* Main Header */}
         <Header 
           handleLogout={handleLogout} 
@@ -57,75 +57,75 @@ const AdminDashboard = ({
           role="admin" 
         />
 
-        {/* Quick Enterprise Metric Counters */}
-        <div className='grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6'>
-          <div className='p-5 rounded-2xl bg-[#111827] border border-slate-800 shadow-lg'>
-            <span className='text-[11px] font-semibold text-slate-400 block mb-1'>Total Members</span>
-            <span className='text-3xl font-extrabold text-white'>{totalEmployees}</span>
-            <span className='text-[10px] text-slate-500 block mt-0.5'>Active Employees</span>
+        {/* Enterprise Metric Counters */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+          <div className="p-5 rounded-[12px] bg-white border border-[#E5E2DA] shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
+            <span className="text-xs font-medium text-[#6B6860] block mb-1">Total Members</span>
+            <span className="text-3xl font-semibold text-[#1C1B18] font-heading">{totalEmployees}</span>
+            <span className="text-[11px] text-[#8E8A80] block mt-1">Active team directory</span>
           </div>
 
-          <div className='p-5 rounded-2xl bg-[#111827] border border-slate-800 shadow-lg'>
-            <span className='text-[11px] font-semibold text-cyan-400 block mb-1'>Total Tasks</span>
-            <span className='text-3xl font-extrabold text-cyan-400'>{totalTasks}</span>
-            <span className='text-[10px] text-slate-500 block mt-0.5'>Assigned Workload</span>
+          <div className="p-5 rounded-[12px] bg-white border border-[#E5E2DA] shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
+            <span className="text-xs font-medium text-[#6B6860] block mb-1">Total Tasks</span>
+            <span className="text-3xl font-semibold text-[#1C1B18] font-heading">{totalTasks}</span>
+            <span className="text-[11px] text-[#8E8A80] block mt-1">Assigned workload</span>
           </div>
 
-          <div className='p-5 rounded-2xl bg-[#111827] border border-slate-800 shadow-lg'>
-            <span className='text-[11px] font-semibold text-amber-400 block mb-1'>In Progress</span>
-            <span className='text-3xl font-extrabold text-amber-400'>{activeTasks}</span>
-            <span className='text-[10px] text-slate-500 block mt-0.5'>Currently Active</span>
+          <div className="p-5 rounded-[12px] bg-white border border-[#E5E2DA] shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
+            <span className="text-xs font-medium text-[#6B6860] block mb-1">In Progress</span>
+            <span className="text-3xl font-semibold text-[#B54708] font-heading">{activeTasks}</span>
+            <span className="text-[11px] text-[#8E8A80] block mt-1">Currently being executed</span>
           </div>
 
-          <div className='p-5 rounded-2xl bg-[#111827] border border-slate-800 shadow-lg'>
-            <span className='text-[11px] font-semibold text-emerald-400 block mb-1'>Delivered</span>
-            <span className='text-3xl font-extrabold text-emerald-400'>{completedTasks}</span>
-            <span className='text-[10px] text-slate-500 block mt-0.5'>Completed Tasks</span>
+          <div className="p-5 rounded-[12px] bg-white border border-[#E5E2DA] shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
+            <span className="text-xs font-medium text-[#6B6860] block mb-1">Delivered</span>
+            <span className="text-3xl font-semibold text-[#027A48] font-heading">{completedTasks}</span>
+            <span className="text-[11px] text-[#8E8A80] block mt-1">Completed assignments</span>
           </div>
         </div>
 
         {/* Create Task Form */}
-        <div className='p-6 md:p-8 bg-[#111827] border border-slate-800 mt-8 rounded-2xl shadow-xl'>
-          <div className='mb-6'>
-            <h2 className='text-xl font-bold text-white'>Assign New Task</h2>
-            <p className='text-xs text-slate-400 mt-0.5'>
-              Delegate workload to team members with clear deadlines and priority
+        <div className="p-6 md:p-8 bg-white border border-[#E5E2DA] mt-8 rounded-[12px] shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-[#1C1B18] font-heading">Assign New Task</h2>
+            <p className="text-xs text-[#6B6860] mt-1">
+              Delegate workload to team members with clear deadlines, instructions, and priority levels.
             </p>
           </div>
 
-          <form onSubmit={submitHandler} className='flex flex-wrap w-full items-start justify-between gap-6'>
+          <form onSubmit={submitHandler} className="flex flex-wrap w-full items-start justify-between gap-6">
             
-            <div className='w-full md:w-[48%] flex flex-col gap-4'>
+            <div className="w-full md:w-[48%] flex flex-col gap-4">
               <div>
-                <label className='text-xs font-semibold text-slate-300 block mb-1'>Task Title *</label>
+                <label className="text-xs font-medium text-[#1C1B18] block mb-1.5">Task Title *</label>
                 <input 
                   value={title} 
                   onChange={(e) => setTitle(e.target.value)} 
                   required 
-                  className='text-sm py-2.5 px-3.5 w-full rounded-xl outline-none bg-[#090d16] border border-slate-700/80 focus:border-indigo-500 text-white placeholder-slate-500 transition' 
+                  className="h-[44px] text-sm px-3.5 w-full rounded-[8px] outline-none bg-white border border-[#E5E2DA] hover:border-[#D1CDC4] focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] text-[#1C1B18] placeholder-[#8E8A80] transition-colors duration-150" 
                   type="text" 
-                  placeholder='e.g. Design Customer Onboarding Flow' 
+                  placeholder="e.g. Design Customer Onboarding Flow" 
                 />
               </div>
               
-              <div className='grid grid-cols-2 gap-3'>
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className='text-xs font-semibold text-slate-300 block mb-1'>Due Date *</label>
+                  <label className="text-xs font-medium text-[#1C1B18] block mb-1.5">Due Date *</label>
                   <input 
                     value={date} 
                     onChange={(e) => setDate(e.target.value)} 
                     required 
-                    className='text-sm py-2 px-3 w-full rounded-xl outline-none bg-[#090d16] border border-slate-700/80 focus:border-indigo-500 text-white cursor-pointer transition' 
+                    className="h-[44px] text-sm px-3.5 w-full rounded-[8px] outline-none bg-white border border-[#E5E2DA] hover:border-[#D1CDC4] focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] text-[#1C1B18] cursor-pointer transition-colors duration-150" 
                     type="date" 
                   />
                 </div>
 
                 <div>
-                  <label className='text-xs font-semibold text-slate-300 block mb-1'>Priority</label>
+                  <label className="text-xs font-medium text-[#1C1B18] block mb-1.5">Priority</label>
                   <select
                     value={priority}
                     onChange={(e) => setPriority(e.target.value)}
-                    className='text-sm py-2 px-3 w-full rounded-xl outline-none bg-[#090d16] border border-slate-700/80 focus:border-indigo-500 text-white cursor-pointer transition'
+                    className="h-[44px] text-sm px-3 w-full rounded-[8px] outline-none bg-white border border-[#E5E2DA] hover:border-[#D1CDC4] focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] text-[#1C1B18] cursor-pointer transition-colors duration-150"
                   >
                     <option value="High">High</option>
                     <option value="Medium">Medium</option>
@@ -134,14 +134,14 @@ const AdminDashboard = ({
                 </div>
               </div>
 
-              <div className='grid grid-cols-2 gap-3'>
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className='text-xs font-semibold text-slate-300 block mb-1'>Assign To *</label>
+                  <label className="text-xs font-medium text-[#1C1B18] block mb-1.5">Assign To *</label>
                   <select
                     value={assignTo}
                     onChange={(e) => setAssignTo(e.target.value)}
                     required
-                    className='text-sm py-2 px-3 w-full rounded-xl outline-none bg-[#090d16] border border-slate-700/80 focus:border-indigo-500 text-white cursor-pointer transition'
+                    className="h-[44px] text-sm px-3 w-full rounded-[8px] outline-none bg-white border border-[#E5E2DA] hover:border-[#D1CDC4] focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] text-[#1C1B18] cursor-pointer transition-colors duration-150"
                   >
                     {employees.map(emp => (
                       <option key={emp.id} value={emp.name}>
@@ -152,33 +152,33 @@ const AdminDashboard = ({
                 </div>
 
                 <div>
-                  <label className='text-xs font-semibold text-slate-300 block mb-1'>Category</label>
+                  <label className="text-xs font-medium text-[#1C1B18] block mb-1.5">Category</label>
                   <input 
                     value={category} 
                     onChange={(e) => setCategory(e.target.value)} 
-                    className='text-sm py-2 px-3 w-full rounded-xl outline-none bg-[#090d16] border border-slate-700/80 focus:border-indigo-500 text-white placeholder-slate-500 transition' 
+                    className="h-[44px] text-sm px-3.5 w-full rounded-[8px] outline-none bg-white border border-[#E5E2DA] hover:border-[#D1CDC4] focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] text-[#1C1B18] placeholder-[#8E8A80] transition-colors duration-150" 
                     type="text" 
-                    placeholder='Design, Backend, QA...' 
+                    placeholder="e.g. Design, Backend, QA" 
                   />
                 </div>
               </div>
             </div>
 
-            <div className='w-full md:w-[48%] flex flex-col items-start h-full justify-between'>
-              <div className='w-full'>
-                <label className='text-xs font-semibold text-slate-300 block mb-1'>Description</label>
+            <div className="w-full md:w-[48%] flex flex-col items-start h-full justify-between">
+              <div className="w-full">
+                <label className="text-xs font-medium text-[#1C1B18] block mb-1.5">Task Description</label>
                 <textarea 
                   value={description} 
                   onChange={(e) => setDescription(e.target.value)} 
                   required 
-                  className='w-full h-36 text-sm py-2.5 px-3.5 rounded-xl outline-none bg-[#090d16] border border-slate-700/80 focus:border-indigo-500 text-white resize-none placeholder-slate-500 transition' 
-                  placeholder='Detailed instructions, deliverables, and acceptance criteria...'
+                  className="w-full h-36 text-sm p-3.5 rounded-[8px] outline-none bg-white border border-[#E5E2DA] hover:border-[#D1CDC4] focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] text-[#1C1B18] resize-none placeholder-[#8E8A80] transition-colors duration-150" 
+                  placeholder="Detailed instructions, deliverables, and acceptance criteria..."
                 />
               </div>
 
               <button 
                 type="submit" 
-                className='w-full mt-4 py-3 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-600/25 transition cursor-pointer'
+                className="w-full h-[44px] mt-4 bg-[var(--ems-accent,#0F766E)] hover:bg-[var(--ems-accent-hover,#115E59)] active:bg-[var(--ems-accent-active,#0D625C)] text-white font-medium text-sm rounded-[8px] shadow-[0_1px_2px_rgba(0,0,0,0.06)] transition-colors duration-150 cursor-pointer flex items-center justify-center"
               >
                 Assign Task to Team Member
               </button>

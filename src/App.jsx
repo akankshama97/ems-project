@@ -212,7 +212,7 @@ export default function App() {
   }
 
   return (
-    <div className={`min-h-screen ${!user ? 'bg-[var(--ems-bg,#F7F5F0)] text-[var(--ems-text-primary,#1C1B18)]' : 'bg-[#090d16] text-slate-100'} antialiased`}>
+    <div className="min-h-screen bg-[var(--ems-bg,#F7F5F0)] text-[var(--ems-text-primary,#1C1B18)] font-body antialiased">
       {!user && (
         <Login 
           handleLogin={handleLogin} 
